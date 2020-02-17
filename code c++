@@ -1,0 +1,68 @@
+#include<stdio.h>
+
+struct matrix{
+	unsigned long long A, B, C, D, E, F, G, H, I;
+}matrixIdentity, matrixFibo;
+
+struct matrix multiply(matrix mat , matrix rix){
+		matrix result;
+
+		result.A = ((mat.A * rix.A) + (mat.B * rix.D) + (mat.C * rix.G)) % 1000000009;
+		result.B = ((mat.A * rix.B) + (mat.B * rix.E) + (mat.C * rix.H)) % 1000000009;
+		result.C = ((mat.A * rix.C) + (mat.B * rix.F) + (mat.C * rix.I)) % 1000000009;
+		result.D = ((mat.D * rix.A) + (mat.E * rix.D) + (mat.F * rix.G)) % 1000000009;
+		result.E = ((mat.D * rix.B) + (mat.E * rix.E) + (mat.F * rix.H)) % 1000000009;
+		result.F = ((mat.D * rix.C) + (mat.E * rix.F) + (mat.F * rix.I)) % 1000000009;
+		result.G = ((mat.G * rix.A) + (mat.H * rix.D) + (mat.I * rix.G)) % 1000000009;
+		result.H = ((mat.G * rix.B) + (mat.H * rix.E) + (mat.I * rix.H)) % 1000000009;
+		result.I = ((mat.G * rix.C) + (mat.H * rix.F) + (mat.I * rix.I)) % 1000000009;
+		
+		return result;
+}
+
+struct matrix fibo(unsigned long long n){
+	
+	if(n == 0)
+		return matrixIdentity;
+
+	if(n % 2 == 0){ // Even
+		matrix sum = fibo(n/2);
+		return multiply(sum,sum);
+	}
+	
+	if(n % 2 == 1){ // Odd
+		return multiply(matrixFibo,fibo(n-1));
+	}
+}
+
+int main(){
+	
+	unsigned long long n;
+	matrixIdentity.A = 1;	
+	matrixIdentity.B = 0;
+	matrixIdentity.C = 0;
+	matrixIdentity.D = 0;
+	matrixIdentity.E = 1;
+	matrixIdentity.F = 0;
+	matrixIdentity.G = 0;
+	matrixIdentity.H = 0;
+	matrixIdentity.I = 1;
+	
+	matrixFibo.A = 1;
+	matrixFibo.B = 1;
+	matrixFibo.C = 1;
+	matrixFibo.D = 1;
+	matrixFibo.E = 0;
+	matrixFibo.F = 0;
+	matrixFibo.G = 0;
+	matrixFibo.H = 1;
+	matrixFibo.I = 0;
+	
+	while(scanf("%llu",&n) != EOF)
+	{	
+		if(n == 0) break;
+		printf("%llu\n",fibo(n-1).B);
+	}
+	
+	return 0;
+}
